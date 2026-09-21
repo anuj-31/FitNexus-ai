@@ -1,0 +1,22 @@
+spring:
+  application:
+    name: gateway-service
+  config:
+    import: optional:configserver:http://localhost:8888
+
+
+#eureka:
+#  client:
+#    serviceUrl:
+#      defaultZone: http://localhost:8761/eureka
+#  config:
+#    # Do not start without the route and Eureka settings supplied by Config Server.
+#    import: configserver:http://localhost:8888
+#  cloud:
+#    config:
+#      name: gateway-service
+
+#app:
+#  security:
+#    keycloak-enabled: ${KEYCLOAK_ENABLED:false}
+#    dev-user-id: ${DEV_USER_ID:local-dev-user}
