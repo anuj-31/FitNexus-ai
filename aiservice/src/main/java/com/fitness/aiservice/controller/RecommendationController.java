@@ -23,4 +23,10 @@ public class RecommendationController {
     public ResponseEntity<Recommendation>getActivityRecommendation(@PathVariable String activityId){
         return  ResponseEntity.ok(recommendationService.getActivityRecommendation(activityId));
     }
+
+    @DeleteMapping("/activity/{activityId}")
+    public ResponseEntity<Void> deleteActivityRecommendation(@PathVariable String activityId) {
+        recommendationService.deleteActivityRecommendation(activityId);
+        return ResponseEntity.noContent().build();
+    }
 }

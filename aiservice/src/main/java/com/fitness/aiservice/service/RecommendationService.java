@@ -25,4 +25,13 @@ public class RecommendationService {
                         HttpStatus.NOT_FOUND,
                         "No recommendation has been generated for activity " + activityId));
     }
+
+    public void deleteActivityRecommendation(String activityId) {
+        Recommendation recommendation = recommendationRepository.findByActivityId(activityId)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "No recommendation has been generated for activity " + activityId));
+
+        recommendationRepository.delete(recommendation);
+    }
 }
