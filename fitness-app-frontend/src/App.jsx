@@ -1085,7 +1085,6 @@ function App() {
   const navItems = [
     { label: "Dashboard", to: "/dashboard" },
     { label: "Activities", to: "/activities" },
-    { label: "AI Coach", to: "/ai-coach" },
   ];
 
   const isNavActive = (target) => {
@@ -1094,9 +1093,6 @@ function App() {
     }
     if (target === "/dashboard") {
       return location.pathname === "/dashboard" || location.pathname === "/";
-    }
-    if (target === "/ai-coach") {
-      return location.pathname === "/ai-coach" || location.pathname.startsWith("/ai-coach/");
     }
     return false;
   };
@@ -1171,7 +1167,7 @@ function App() {
                   <NavLink
                     key={item.to}
                     to={item.to}
-                    end={item.to === "/dashboard" || item.to === "/ai-coach"}
+                    end={item.to === "/dashboard"}
                     className={({ isActive }) => (isActive || isNavActive(item.to) ? "nav-link active" : "nav-link")}
                     style={{ textDecoration: "none" }}
                   >
@@ -1228,8 +1224,6 @@ function App() {
               <Route path="/dashboard" element={<DashboardPage />} />
               <Route path="/activities" element={<AllActivities />} />
               <Route path="/activities/:id" element={<ActivityDetail />} />
-              <Route path="/ai-coach/:activityId" element={<AICoachPage />} />
-              <Route path="/ai-coach" element={<AICoachPage />} />
               <Route path="/login" element={<Navigate to="/dashboard" replace />} />
               <Route path="/" element={<Navigate to="/dashboard" replace />} />
               <Route path="*" element={<Navigate to="/dashboard" replace />} />

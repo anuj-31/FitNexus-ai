@@ -46,10 +46,17 @@ const formatDisplayDate = (value) => {
 const ActivityList = ({ activities = [], isLoading = false, onActivitiesLoaded }) => {
   const navigate = useNavigate();
   const [deleteTarget, setDeleteTarget] = useState(null);
+  const [generatingActivityId, setGeneratingActivityId] = useState(null);
 
   const handleDelete = async (event, activityId) => {
     event.stopPropagation();
     setDeleteTarget(activityId);
+  };
+
+  const handleRecommendationClick = (activityId) => {
+    setGeneratingActivityId(activityId);
+    sessionStorage.setItem("fitnexus:pending-ai-check", String(activityId));
+    navigate(`/activities/${activityId}`);
   };
 
   const confirmDelete = async () => {
@@ -173,31 +180,12 @@ const ActivityList = ({ activities = [], isLoading = false, onActivitiesLoaded }
 
                 <Divider sx={{ borderColor: "rgba(255,255,255,0.08)", mb: 2 }} />
 
-                <Stack direction="row" spacing={1} justifyContent="space-between" alignItems="center" sx={{ flexWrap: "wrap", rowGap: 1 }}>
-                  <Button
-                    variant="text"
-                    onClick={() => navigate(`/activities/${activity.id}`)}
-                    sx={{
-                      minWidth: "auto",
-                      color: meta.accent,
-                      fontWeight: 700,
-                      textTransform: "none",
-                      p: 0,
-                      "&:hover": { background: "transparent", opacity: 0.9 },
-                    }}
-                  >
-                    <Stack direction="row" alignItems="center" spacing={0.5}>
-                      <Typography variant="body2" sx={{ color: meta.accent, fontWeight: 700 }}>
-                        View Details
-                      </Typography>
-                      <ArrowRight size={16} color={meta.accent} />
-                    </Stack>
-                  </Button>
-
-                  <Tooltip title="Open AI coach for this workout" arrow>
+                <Stack direction="row" justifyContent="flex-end" alignItems="center" sx={{ flexWrap: "wrap", rowGap: 1 }}>
+                  <Tooltip title="Open this workout to view the recommendation" arrow>
                     <Button
                       variant="contained"
-                      onClick={() => navigate(`/ai-coach/${activity.id}`)}
+                      disabled={generatingActivityId === activity.id}
+                      onClick={() => handleRecommendationClick(activity.id)}
                       sx={{
                         borderRadius: 999,
                         background: "linear-gradient(135deg, #9ae66e, #4fd4a1)",
@@ -209,14 +197,15 @@ const ActivityList = ({ activities = [], isLoading = false, onActivitiesLoaded }
                         textTransform: "none",
                         boxShadow: "0 14px 28px rgba(154,230,110,0.18)",
                         transition: "transform 0.2s ease, box-shadow 0.2s ease",
+                        opacity: generatingActivityId === activity.id ? 0.85 : 1,
                         "&:hover": {
-                          transform: "translateY(-1px)",
+                          transform: generatingActivityId === activity.id ? "none" : "translateY(-1px)",
                           boxShadow: "0 18px 30px rgba(154,230,110,0.22)",
                         },
                       }}
                       startIcon={<Sparkles size={14} />}
                     >
-                      Get AI Recommendation
+                      {generatingActivityId === activity.id ? "Generating..." : "Get Recommendation"}
                     </Button>
                   </Tooltip>
                 </Stack>
